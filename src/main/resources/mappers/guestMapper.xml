@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.cjs2108_yek.dao.GuestDAO">
+	<select id="getGuestList" resultType="com.spring.cjs2108_yek.vo.GuestVO">
+		select * from guest order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<select id="totRecCnt" resultType="int">
+		select count(*) from guest;
+	</select>
+	
+	<insert id="setGuestInput">
+		insert into guest (name,email,hostIp,content) values (#{vo.name},#{vo.email},#{vo.hostIp},#{vo.content});
+	</insert>
+	
+	<delete id="setGuestDelete">
+		delete from guest where idx = #{idx};
+	</delete>
+</mapper>

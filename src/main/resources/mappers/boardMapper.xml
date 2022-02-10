@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.cjs2108_yek.dao.BoardDAO">
+	<select id="totRecCnt" resultType="int">
+		select count(*) from board;
+	</select>
+	
+	<select id="getBoardList" resultType="com.spring.cjs2108_yek.vo.BoardVO">
+		select *,cast(timestampdiff(minute, wDate, now())/60 as signed integer) as diffTime from board order by pin desc, idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<update id="addReadNum">
+		update board set readNum = readNum + 1 where idx = #{idx};
+	</update>
+	
+	<select id="getBoardContent" resultType="com.spring.cjs2108_yek.vo.BoardVO">
+		select * from board where idx = #{idx};
+	</select>
+	
+	<select id="getPreNext" resultType="com.spring.cjs2108_yek.vo.BoardVO">
+		select idx,title from board where idx in (
+			(select idx from board where <![CDATA[idx < #{idx}]]> order by idx desc limit 1),
+			(select idx from board where <![CDATA[idx > #{idx}]]> order by idx limit 1));
+	</select>
+	
+	<delete id="setBoardDelete">
+		delete from board where idx = #{idx};
+	</delete>
+	
+	<insert id="setBoardInput">
+		insert into board value (default,#{vo.category},#{vo.mid},#{vo.nickname},#{vo.title},#{vo.email},#{vo.content},default,default,#{vo.hostIp},#{vo.pin});
+	</insert>
+	
+	<update id="setBoardUpdate">
+		update board set title=#{vo.title},content=#{vo.content},wDate=now(),hostIp=#{vo.hostIp} where idx=#{vo.idx};
+	</update>
+	
+	<select id="maxLevelOrder" resultType="String">
+		select max(levelOrder) from boardReply where boardIdx = #{boardIdx};
+	</select>
+	
+	<insert id="setReplyInsert">
+		insert into boardReply values (default,#{rVo.boardIdx},#{rVo.mid},#{rVo.nickname},default,#{rVo.hostIp},#{rVo.content},default,#{rVo.levelOrder});
+	</insert>
+	
+	<insert id="setReplyInsert2">
+		insert into boardReply values (default,#{rVo.boardIdx},#{rVo.mid},#{rVo.nickname},default,#{rVo.hostIp},#{rVo.content},#{rVo.level},#{rVo.levelOrder});
+	</insert>
+	
+	<select id="getBoardReply" resultType="com.spring.cjs2108_yek.vo.BoardReplyVO">
+	  select * from boardReply where boardIdx = #{idx} order by levelOrder;
+	</select>
+	
+	<update id="levelOrderPlusUpdate">
+	  update boardReply set levelOrder=levelOrder+1 where boardIdx=#{rVo.boardIdx} and levelOrder>#{rVo.levelOrder};
+	</update>
+	
+	<delete id="setReplyDelete">
+		delete from boardReply where idx = #{replyIdx};
+	</delete>
+	
+</mapper>
