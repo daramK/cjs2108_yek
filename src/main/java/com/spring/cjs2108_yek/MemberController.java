@@ -50,9 +50,9 @@ public class MemberController {
 		if(vo != null && passwordEncoder.matches(pwd, vo.getPwd()) && vo.getUserDel().equals("NO")) {
 			String strLevel = "";
 			if(vo.getLevel() == 0) strLevel = "관리자";
-			else if(vo.getLevel() == 1) strLevel = "특별회원";
-			else if(vo.getLevel() == 2) strLevel = "우수회원";
-			else if(vo.getLevel() == 3) strLevel = "정회원";
+			else if(vo.getLevel() == 1) strLevel = "퍼플회원";
+			else if(vo.getLevel() == 2) strLevel = "블루회원";
+			else if(vo.getLevel() == 3) strLevel = "화이트회원";
 			else if(vo.getLevel() == 4) strLevel = "준회원";
 			
 			session.setAttribute("sMid", mid);

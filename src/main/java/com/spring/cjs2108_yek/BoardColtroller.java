@@ -86,7 +86,9 @@ public class BoardColtroller {
 	public String boardInputPost(BoardVO vo) {
 		boardService.imgCheck(vo.getContent());
 		vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/ckeditor/board/"));
-		System.out.println("vo : " + vo);
+		if(vo.getCategory().equals("공지")) {
+			vo.setPin(1);
+		}
 		boardService.setBoardInput(vo);
 		
 		return "redirect:/msg/boardInputOk";
