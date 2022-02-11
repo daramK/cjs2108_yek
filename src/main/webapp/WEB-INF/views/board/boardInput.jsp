@@ -12,13 +12,23 @@
 		function fCheck() {
 			var title = myform.title.value;
 			var content = myform.content.value;
+			var category = myform.category.value;
+			var pin = myform.pin.value;
 			
 			if(title.trim() == ""){
 				alert("제목을 입력하세요.");
 				myform.title.focus();
 			}
 			else {
-				myform.submit();
+				if(category == '공지') {
+					alert("공지글입니다.");
+					pin = 1;
+					myform.submit();
+				}
+				else{
+					alert("일반글입니다.");
+					myform.submit();
+				}
 			}
 		}
 	</script>
@@ -39,9 +49,6 @@
 							<option value="공지">공지</option>
 						</c:if>
 					</select>
-					<c:if test="category == '공지'">
-						<input type="hidden" name="pin" value="1"/>
-					</c:if>
 				</td>
 			</tr>
 			<tr>
@@ -78,6 +85,7 @@
 		<input type="hidden" name="hostIp" value="${pageContext.request.remoteAddr}"/>
 		<input type="hidden" name="mid" value="${sMid}"/>
 		<input type="hidden" name="nickname" value="${sNickname}"/>
+		<input type="hidden" name="pin" value="0"/>
 	</form>
 </div>
 <br/>
